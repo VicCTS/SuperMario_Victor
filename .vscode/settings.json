@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "SuperMario.sln"
+    "dotnet.defaultSolution": "SuperMario_Victor.sln"
 }
