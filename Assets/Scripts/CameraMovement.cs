@@ -12,6 +12,9 @@ public class CameraMovement : MonoBehaviour
 
     public float interpolationRatio = 0.5f;
 
+    bool isPlaying;
+    bool _isAlive;
+
     void Awake()
     {
         //Busca un objeto por el nombre en la escena
@@ -24,6 +27,25 @@ public class CameraMovement : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        /*if(playerTransform != null)
+        {
+            Vector3 desiredPosition = playerTransform.position + offset;
+
+            float clampX = Mathf.Clamp(desiredPosition.x, minPostion.x, maxPosition.x);
+            float clampY = Mathf.Clamp(desiredPosition.y, minPostion.y, maxPosition.y);
+            Vector3 clampedPosition = new Vector3(clampX, clampY, desiredPosition.z);
+
+            Vector3 lerpedPosition = Vector3.Lerp(transform.position, clampedPosition, interpolationRatio);
+
+            transform.position = lerpedPosition;   
+        }*/
+
+
+        if(playerTransform == null)
+        {
+            return;
+        }
+
         Vector3 desiredPosition = playerTransform.position + offset;
 
         float clampX = Mathf.Clamp(desiredPosition.x, minPostion.x, maxPosition.x);
@@ -32,6 +54,6 @@ public class CameraMovement : MonoBehaviour
 
         Vector3 lerpedPosition = Vector3.Lerp(transform.position, clampedPosition, interpolationRatio);
 
-        transform.position = lerpedPosition;       
+        transform.position = lerpedPosition; 
     }
 }

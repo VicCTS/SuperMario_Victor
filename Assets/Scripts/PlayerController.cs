@@ -13,11 +13,22 @@ public class PlayerController : MonoBehaviour
     private SpriteRenderer _spriteRender;
     private Animator _animator;
     private AudioSource _audioSource;
+    private BoxCollider2D _boxCollider;
+    private GameManager _gameManager;
+    private SoundManager _soundManager;
 
     public float playerSpeed = 4.5f;
     public float jumpForce = 10f;
 
+    public Transform bulletSpawn;
+    public GameObject bulletPrefab;
+    public bool canShoot = false;
+    public float powerUpDuration = 10f;
+    public float powerUpTimer;
+
     public AudioClip jumpSFX;
+    public AudioClip deathSFX;
+    public AudioClip shootSFX;
 
     void Awake()
     {
@@ -26,6 +37,9 @@ public class PlayerController : MonoBehaviour
         _spriteRender = GetComponent<SpriteRenderer>();
         _animator = GetComponent<Animator>();
         _audioSource = GetComponent<AudioSource>();
+        _boxCollider = GetComponent<BoxCollider2D>();
+        _gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
+        _soundManager = FindObjectOfType<SoundManager>().GetComponent<SoundManager>();
     }
 
     // Start is called before the first frame update
@@ -38,11 +52,31 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(!_gameManager.isPlaying)
+        {
+            return;
+        }
+
+        if(_gameManager.isPaused)
+        {
+            return;
+        }
+
         inputHorizontal = Input.GetAxisRaw("Horizontal");
 
         if(Input.GetButtonDown("Jump") && _groundSensor.isGrounded)
         {
             Jump();
+        }
+
+        if(Input.GetButtonDown("Fire1") && canShoot)
+        {
+            Shoot();
+        }
+
+        if(canShoot)
+        {
+            PowerUp();
         }
 
         Movement();
@@ -75,12 +109,12 @@ public class PlayerController : MonoBehaviour
     {
         if(inputHorizontal > 0)
         {
-            _spriteRender.flipX = false;
+            transform.rotation = Quaternion.Euler(0, 0, 0);
             _animator.SetBool("IsRunning", true);
         }
         else if(inputHorizontal < 0)
         {
-            _spriteRender.flipX = true;
+            transform.rotation = Quaternion.Euler(0, 180, 0);
             _animator.SetBool("IsRunning", true);
         }
         else
@@ -94,5 +128,44 @@ public class PlayerController : MonoBehaviour
         rigidBody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         _animator.SetBool("IsJumping", true);
         _audioSource.PlayOneShot(jumpSFX);
+    }
+
+    public void Death()
+    {
+        _animator.SetTrigger("IsDead");
+        _audioSource.PlayOneShot(deathSFX);
+        _boxCollider.enabled = false;
+
+        Destroy(_groundSensor.gameObject);
+
+        inputHorizontal = 0;
+        rigidBody.velocity = Vector2.zero;
+
+        rigidBody.AddForce(Vector2.up * jumpForce / 2, ForceMode2D.Impulse);
+
+        //_soundManager.Invoke("DeathBGM", deathSFX.length);
+        StartCoroutine(_soundManager.DeathBGM());
+        //_soundManager.StartCoroutine("DeathBGM");
+
+        _gameManager.isPlaying = false;
+
+        Destroy(gameObject, 2);
+    }
+
+    void Shoot()
+    {
+        Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation);
+        _audioSource.PlayOneShot(shootSFX);
+    }
+
+    void PowerUp()
+    {
+        powerUpTimer += Time.deltaTime;
+
+        if(powerUpTimer >= powerUpDuration)
+        {
+            canShoot = false;
+            powerUpTimer = 0;
+        }
     }
 }
