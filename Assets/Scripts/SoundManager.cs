@@ -9,6 +9,7 @@ public class SoundManager : MonoBehaviour
 
     public AudioClip bgm;
     public AudioClip gameOVer;
+    public AudioClip pauseSFX;
 
     public float delay = 2;
     public float timer;
@@ -50,7 +51,7 @@ public class SoundManager : MonoBehaviour
         }
         else
         {
-            _audioSource.Play();
+           _audioSource.Play();
         }
     }
 
