@@ -40,6 +40,7 @@ public class PowerUp : MonoBehaviour
         {
             PlayerController playerScript = collision.gameObject.GetComponent<PlayerController>();
             playerScript.canShoot = true;
+            playerScript.powerUpTimer = 0;
             Interact();
         }
     }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -25,6 +26,7 @@ public class PlayerController : MonoBehaviour
     public bool canShoot = false;
     public float powerUpDuration = 10f;
     public float powerUpTimer;
+    public Image powerUpImage;
 
     public AudioClip jumpSFX;
     public AudioClip deathSFX;
@@ -161,6 +163,8 @@ public class PlayerController : MonoBehaviour
     void PowerUp()
     {
         powerUpTimer += Time.deltaTime;
+
+        powerUpImage.fillAmount = Mathf.InverseLerp(powerUpDuration, 0, powerUpTimer);
 
         if(powerUpTimer >= powerUpDuration)
         {

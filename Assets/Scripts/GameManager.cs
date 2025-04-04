@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,10 +10,18 @@ public class GameManager : MonoBehaviour
     public bool isPaused = false;
     private SoundManager _soundManager;
     public GameObject pauseCanvas;
+    public Text coinsText;
+
+    private int coins = 0;
 
     void Awake()
     {
         _soundManager = FindObjectOfType<SoundManager>().GetComponent<SoundManager>();
+    }
+
+    void Start()
+    {
+        coinsText.text = "Coins: " + coins.ToString();
     }
 
     void Update()
@@ -45,5 +54,11 @@ public class GameManager : MonoBehaviour
             _soundManager.PauseBGM();
             pauseCanvas.SetActive(true);
         }
+    }
+
+    public void AddCoins()
+    {
+        coins++;
+        coinsText.text = "Coins: " + coins.ToString();
     }
 }
