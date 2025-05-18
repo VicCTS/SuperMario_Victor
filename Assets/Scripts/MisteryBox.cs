@@ -9,7 +9,8 @@ public class MisteryBox : MonoBehaviour
     public AudioClip _misteryBoxSFX;
     public AudioClip _misteryBoxSFX2;
     
-    public GameObject powerUpPrefab;
+    public GameObject[] powerUpPrefab;
+    public int powerUpIndex;
     public Transform powerUPSpawn;
 
     private bool _isOpen = false;
@@ -29,7 +30,7 @@ public class MisteryBox : MonoBehaviour
             _audioSource.volume = 1f;
             _audioSource.clip = _misteryBoxSFX;
 
-            Instantiate(powerUpPrefab, powerUPSpawn.position, powerUPSpawn.rotation);
+            Instantiate(powerUpPrefab[powerUpIndex], powerUPSpawn.position, powerUPSpawn.rotation);
 
             _isOpen = true;
         }

@@ -6,6 +6,7 @@ public class GroundSensor : MonoBehaviour
 {
     private Rigidbody2D _rigidBody;
     public bool isGrounded;
+    public bool canDoubleJump = true;
 
     public float jumpDamage = 5;
 
@@ -19,8 +20,7 @@ public class GroundSensor : MonoBehaviour
         if(collider.gameObject.layer == 3)
         {
             isGrounded = true;
-            Debug.Log(collider.gameObject.name);
-            Debug.Log(collider.gameObject.transform.position);
+            canDoubleJump = true;
         }
         else if(collider.gameObject.layer == 6)
         {

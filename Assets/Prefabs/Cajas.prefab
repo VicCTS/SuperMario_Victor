@@ -290,7 +290,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _misteryBoxSFX: {fileID: 8300000, guid: 0c142f03904ec6640ba940072b4349c1, type: 3}
   _misteryBoxSFX2: {fileID: 8300000, guid: 6c23e440762176240ac436e82bfe03b7, type: 3}
-  powerUpPrefab: {fileID: 6016400709281648503, guid: 085890918bf321045b4376fa5e2406e4, type: 3}
+  powerUpPrefab:
+  - {fileID: 6016400709281648503, guid: 085890918bf321045b4376fa5e2406e4, type: 3}
+  - {fileID: 5367827009367728043, guid: 3e64487c44144ec41b963e7f7c553f22, type: 3}
+  - {fileID: 6394985853940884644, guid: 135b1d442d092a749a7dbdde8e4dfe02, type: 3}
+  powerUpIndex: 0
   powerUPSpawn: {fileID: 1863158008852841248}
 --- !u!95 &4726177249455949037
 Animator:

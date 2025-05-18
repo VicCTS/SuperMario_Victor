@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour
     private AudioSource _audioSource;
     private Rigidbody2D _rigidBody;
     private BoxCollider2D _boxCollider;
+    private GameManager _gameManager;
 
     public int direction = 1;
     public float speed = 5;
@@ -26,12 +27,11 @@ public class Enemy : MonoBehaviour
         _rigidBody = GetComponent<Rigidbody2D>();
         _boxCollider = GetComponent<BoxCollider2D>();
         _healthBar = GetComponentInChildren<Slider>();
+        _gameManager = FindObjectOfType<GameManager>().GetComponent<GameManager>();
     }
 
     void Start()
     {
-        speed = 0;
-
         currentHealth = maxHealth;
         _healthBar.maxValue = maxHealth;
         _healthBar.value = maxHealth;
@@ -47,13 +47,14 @@ public class Enemy : MonoBehaviour
         direction = 0;
         _rigidBody.gravityScale = 0;
         _animator.SetTrigger("IsDead");
+        _audioSource.PlayOneShot(_deathSFX);
         _boxCollider.enabled = false;
         Destroy(gameObject, 0.3f);
     }
 
     public void TakeDamage(float damage)
     {
-        currentHealth-= damage;
+        currentHealth-= (int)damage;
 
         _healthBar.value = currentHealth;
 
@@ -80,11 +81,13 @@ public class Enemy : MonoBehaviour
 
     void OnBecameVisible()
     {
-        speed = 5;
+        direction = 1;
+        _gameManager.enemiesInScreen.Add(gameObject);
     }
 
     void OnBecameInvisible()
     {
-        speed = 0;
+        direction = 0;
+        _gameManager.enemiesInScreen.Remove(gameObject);
     }
 }
